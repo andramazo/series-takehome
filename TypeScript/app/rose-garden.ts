@@ -1,3 +1,12 @@
+
+enum ItemList {
+  AGED_BRIE = "Aged Brie",
+  BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert",
+  SULFURAS = "Sulfuras, Hand of Ragnaros"
+}
+
+const MAX_QAULITY = 50
+
 export class Item {
   name: string;
   sellIn: number;
@@ -17,51 +26,44 @@ export class RoseGarden {
     this.items = items;
   }
 
+  //Get the items after number of days provided in args
+  getItems(): Array<Item>{
+    return this.items;
+  }
+
   updateQuality() {
     for (let i = 0; i < this.items.length; i++) {
-      if (this.items[i].name != 'Aged Brie' && this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
-        if (this.items[i].quality > 0) {
-          if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-            this.items[i].quality = this.items[i].quality - 1
-          }
+      const item = this.items[i]
+      
+      //If any item starts has word Sulfuras then, it should not be quality or sellIn value
+      if(item.name == ItemList.SULFURAS){
+        break;
+      }      
+      item.sellIn -= 1
+       
+      //If it is Aged Brie, it increases in quality and max can reach to 50
+      if(item.name === ItemList.AGED_BRIE){
+        item.quality +=  (item.quality === MAX_QAULITY ) ? 0 : 1
+      }else if(item.name === ItemList.BACKSTAGE_PASSES){
+        if(item.sellIn < 0 ) item.quality = 0
+        else{
+          let qua = 1
+          if(item.sellIn < 10 ) qua = 2
+          if(item.sellIn < 5 ) qua = 3
+          item.quality +=  (item.quality === MAX_QAULITY ) ? 0 : qua
         }
-      } else {
-        if (this.items[i].quality < 50) {
-          this.items[i].quality = this.items[i].quality + 1
-          if (this.items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
-            if (this.items[i].sellIn < 11) {
-              if (this.items[i].quality < 50) {
-                this.items[i].quality = this.items[i].quality + 1
-              }
-            }
-            if (this.items[i].sellIn < 6) {
-              if (this.items[i].quality < 50) {
-                this.items[i].quality = this.items[i].quality + 1
-              }
-            }
-          }
-        }
+
+        item.quality = item.quality > MAX_QAULITY ? MAX_QAULITY : item.quality
+
+      }else{
+
+        item.quality -= (item.sellIn < 0 ) ? ((item.quality === 0) ? 0 : 2) : 1
+       
+        item.quality = item.quality < 0 ? 0 : item.quality
+        
       }
-      if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-        this.items[i].sellIn = this.items[i].sellIn - 1;
-      }
-      if (this.items[i].sellIn < 0) {
-        if (this.items[i].name != 'Aged Brie') {
-          if (this.items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
-            if (this.items[i].quality > 0) {
-              if (this.items[i].name != 'Sulfuras, Hand of Ragnaros') {
-                this.items[i].quality = this.items[i].quality - 1
-              }
-            }
-          } else {
-            this.items[i].quality = this.items[i].quality - this.items[i].quality
-          }
-        } else {
-          if (this.items[i].quality < 50) {
-            this.items[i].quality = this.items[i].quality + 1
-          }
-        }
-      }
+
+
     }
 
     return this.items;
