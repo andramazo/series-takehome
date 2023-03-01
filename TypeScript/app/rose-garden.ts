@@ -37,7 +37,7 @@ export class RoseGarden {
       
       //If any item starts has word Sulfuras then, it should not be quality or sellIn value
       if(item.name == ItemList.SULFURAS){
-        break;
+        continue;
       }      
       item.sellIn -= 1
        
