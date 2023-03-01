@@ -1,4 +1,8 @@
 
+## Project Update
+- <b>2023-02-28</b>
+	The TypeScript Repo inside this project was updated to the specifications below. 
+
 ## Rose Garden Requirements Specification
 
 Hi and welcome to team Rose Garden. As you know, we are a small inn with a prime location in a
